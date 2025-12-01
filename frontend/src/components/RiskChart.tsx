@@ -19,19 +19,26 @@ interface Props {
 const getExplanation = (feature: string, score: number, data: LoanApplication) => {
     const impact = score > 0 ? "negative" : "positive";
 
-    if (feature === "AMT_ANNUITY") return `Loan EMI is too high relative to monthly income ($${data.income}).`;
-    if (feature === "YEARS_EMPLOYED") return `Employment Length (${data.years_employed} years) shows ${score > 0 ? "instability" : "consistent income"}.`;
-    if (feature === "AGE_YEARS" || feature === "age") return `Applicant age (${data.age}) falls within a ${score > 0 ? "higher-risk" : "stable"} demographic.`;
-    if (feature === "AMT_CREDIT") return `Requested Loan ($${data.loan_amount}) is ${score > 0 ? "high" : "reasonable"} for this profile.`;
-    if (feature === "AMT_INCOME_TOTAL" || feature === "income") return `Annual Income ($${data.income}) is ${score > 0 ? "insufficient" : "sufficient"} for repayment.`;
-    if (feature === "CODE_GENDER") return `Demographic statistical adjustment applied.`;
-    if (feature === "EXT_SOURCE_3" || feature === "credit_score") return `External Bureau Score (${data.credit_score}) indicates ${score > 0 ? "poor" : "excellent"} credit history.`;
+    // Safety check for data
+    if (!data) return `${feature} had a ${impact} impact.`;
+
+    try {
+        if (feature === "AMT_ANNUITY") return `Loan EMI is too high relative to monthly income ($${data.income || 0}).`;
+        if (feature === "YEARS_EMPLOYED") return `Employment Length (${data.years_employed || 0} years) shows ${score > 0 ? "instability" : "consistent income"}.`;
+        if (feature === "AGE_YEARS" || feature === "age") return `Applicant age (${data.age || 0}) falls within a ${score > 0 ? "higher-risk" : "stable"} demographic.`;
+        if (feature === "AMT_CREDIT") return `Requested Loan ($${data.loan_amount || 0}) is ${score > 0 ? "high" : "reasonable"} for this profile.`;
+        if (feature === "AMT_INCOME_TOTAL" || feature === "income") return `Annual Income ($${data.income || 0}) is ${score > 0 ? "insufficient" : "sufficient"} for repayment.`;
+        if (feature === "CODE_GENDER") return `Demographic statistical adjustment applied.`;
+        if (feature === "EXT_SOURCE_3" || feature === "credit_score") return `External Bureau Score (${data.credit_score || 0}) indicates ${score > 0 ? "poor" : "excellent"} credit history.`;
+    } catch (e) {
+        return `${feature} contributed to the risk score.`;
+    }
 
     return `${feature} value had a ${impact} impact on risk.`;
 };
 
 export const RiskChart = ({ factors, formData }: Props) => {
-    if (!factors || factors.length === 0) return null;
+    if (!factors || !Array.isArray(factors) || factors.length === 0) return null;
 
     return (
         <Box mt={6} p={6} bg="gray.800" borderRadius="md" border="1px solid" borderColor="gray.700">
@@ -47,7 +54,7 @@ export const RiskChart = ({ factors, formData }: Props) => {
                         <Tooltip contentStyle={{ backgroundColor: '#171923', border: 'none' }} itemStyle={{ color: 'white' }} />
                         <Bar dataKey="shap_score" radius={[0, 4, 4, 0]} barSize={20}>
                             {factors.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.shap_score > 0 ? "#E53E3E" : "#48BB78"} />
+                                <Cell key={`cell-${index}`} fill={(entry?.shap_score || 0) > 0 ? "#E53E3E" : "#48BB78"} />
                             ))}
                         </Bar>
                     </BarChart>
@@ -68,6 +75,8 @@ export const RiskChart = ({ factors, formData }: Props) => {
 
                 <VStack align="stretch" spacing={4}>
                     {factors.map((f, i) => {
+                        if (!f || typeof f.shap_score !== 'number') return null;
+
                         // Negative SHAP usually means lower risk (good) in many models, but let's stick to the color convention: Red (High Risk) vs Green (Low Risk). 
                         // Actually, typically High SHAP = High Probability of Default = Bad.
                         // So Score > 0 is BAD (Red), Score < 0 is GOOD (Green).
