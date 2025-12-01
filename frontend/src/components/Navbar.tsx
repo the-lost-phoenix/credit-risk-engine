@@ -16,7 +16,7 @@ import {
     Container
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar = () => {
@@ -39,6 +39,9 @@ export const Navbar = () => {
         <>
             <Link href="#features" color="gray.300" _hover={{ color: '#E53E3E' }} fontWeight="medium">Features</Link>
             <Link href="#stats" color="gray.300" _hover={{ color: '#E53E3E' }} fontWeight="medium">Stats</Link>
+            {isAuthenticated && (
+                <Link as={RouterLink} to="/history" color="gray.300" _hover={{ color: '#E53E3E' }} fontWeight="medium">History</Link>
+            )}
             {isAuthenticated ? (
                 <Button
                     variant="outline"
@@ -104,6 +107,9 @@ export const Navbar = () => {
                         <VStack spacing={6} align="stretch">
                             <Link href="#features" color="gray.300" fontSize="lg" onClick={onClose}>Features</Link>
                             <Link href="#stats" color="gray.300" fontSize="lg" onClick={onClose}>Stats</Link>
+                            {isAuthenticated && (
+                                <Link as={RouterLink} to="/history" color="gray.300" fontSize="lg" onClick={onClose}>History</Link>
+                            )}
                             <Box pt={4}>
                                 {isAuthenticated ? (
                                     <Button w="full" variant="outline" colorScheme="red" onClick={handleLogout}>
