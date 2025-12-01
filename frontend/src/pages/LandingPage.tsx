@@ -16,6 +16,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ApplyPage } from './ApplyPage';
+import { Navbar } from '../components/Navbar';
 
 export const LandingPage = () => {
     const [showApp, setShowApp] = useState(false);
@@ -43,8 +44,11 @@ export const LandingPage = () => {
     };
 
     return (
-        <Box bg="black" minH="100vh" color="white">
-            <Container maxW="container.xl" pt={20} pb={20}>
+        <Box bg="black" minH="100vh" w="100vw" overflowX="hidden" color="white">
+            <Navbar />
+
+            {/* Hero Section */}
+            <Container maxW="container.xl" pt={{ base: 10, md: 20 }} pb={20}>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10} alignItems="center">
                     <VStack align="flex-start" spacing={6}>
                         <Heading size="4xl" lineHeight="1.1" letterSpacing="-1px">
@@ -99,7 +103,7 @@ export const LandingPage = () => {
             </Container>
 
             {/* Features / Stats Section */}
-            <Box id="features" borderTop="1px solid #333" py={24} bg="gray.900">
+            <Box id="features" borderTop="1px solid #333" py={24} bg="gray.900" w="full">
                 <Container maxW="container.xl">
                     <VStack spacing={16}>
                         <Heading size="2xl" textAlign="center">Why Choose <span style={{ color: '#E53E3E' }}>CreditRisk.AI</span>?</Heading>
@@ -125,7 +129,7 @@ export const LandingPage = () => {
             </Box>
 
             {/* Stats Section */}
-            <Box id="stats" borderTop="1px solid #333" py={20} bg="black">
+            <Box id="stats" borderTop="1px solid #333" py={20} bg="black" w="full">
                 <Container maxW="container.xl">
                     <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8} textAlign="center">
                         <Box>
@@ -149,7 +153,7 @@ export const LandingPage = () => {
             </Box>
 
             {/* Footer / Support */}
-            <Box id="footer" borderTop="1px solid #333" py={12} bg="gray.900">
+            <Box id="footer" borderTop="1px solid #333" py={12} bg="gray.900" w="full">
                 <Container maxW="container.xl">
                     <Flex justify="space-between" align="center" direction={{ base: 'column', md: 'row' }} gap={6}>
                         <Text color="gray.500">© 2025 CreditRisk.AI Inc. All rights reserved.</Text>
