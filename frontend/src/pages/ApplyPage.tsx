@@ -266,7 +266,7 @@ export const ApplyPage = () => {
                                     <Text color="gray.300" letterSpacing="2px">CONFIDENCE SCORE: {result.risk_score.toFixed(1)}/100</Text>
                                 </Box>
 
-                                <RiskChart factors={result.risk_factors} />
+                                <RiskChart factors={result.risk_factors} formData={formData} />
                             </Box>
                         )}
                     </Box>
