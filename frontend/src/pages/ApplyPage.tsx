@@ -263,7 +263,7 @@ export const ApplyPage = () => {
                                     <Heading size="2xl" color={result.status.includes("APPROVED") ? "green.400" : "red.500"} mb={2}>
                                         {result.status}
                                     </Heading>
-                                    <Text color="gray.300" letterSpacing="2px">CONFIDENCE SCORE: {result.risk_score.toFixed(1)}/100</Text>
+                                    <Text color="gray.300" letterSpacing="2px">RISK SCORE: {result.risk_score.toFixed(1)}/100</Text>
                                 </Box>
 
                                 <RiskChart factors={result.risk_factors} formData={formData} />

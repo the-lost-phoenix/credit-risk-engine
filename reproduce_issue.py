@@ -43,13 +43,13 @@ def test_loan_application(income, loan_amount, credit_score, age, years_employed
         print("Result: APPROVED")
 
 if __name__ == "__main__":
-    # Test Case 1: User's Case (Should Approve)
+    # Test Case 1: User's Case (Screenshot)
     test_loan_application(
         income=94500, 
         loan_amount=200000, 
         credit_score=780, 
-        age=29, 
-        years_employed=5, # Assumption
+        age=32, 
+        years_employed=8, 
         gender="F"
     )
     sys.exit(0)
