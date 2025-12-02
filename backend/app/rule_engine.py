@@ -1,30 +1,22 @@
 # app/rule_engine.py
+from . import schemas
 
-def run_policy_check(income: float, loan_amount: float, credit_score: int):
+def run_policy_check(application: schemas.LoanApplicationCreate):
     """
-    Returns a dictionary with decision: "APPROVED", "REJECTED", "MANUAL_REVIEW"
-    and a reason for the decision.
+    Returns a tuple (status, reason).
+    Status: "APPROVED" or "REJECTED"
     """
     
     # Rule 1: The "CIBIL" Cutoff
     # In India, < 650 is usually considered sub-prime.
-    if credit_score < 650:
-        return {
-            "status": "REJECTED", 
-            "reason": "Credit Score below policy threshold (650)."
-        }
+    if application.credit_score < 650:
+        return "REJECTED", "Credit Score below policy threshold (650)."
 
     # Rule 2: Loan-to-Income Ratio
     # We shouldn't lend more than 10x monthly income (simplified rule)
-    max_loan_limit = income * 10
-    if loan_amount > max_loan_limit:
-        return {
-            "status": "REJECTED",
-            "reason": f"Loan amount exceeds 10x monthly income limit. Max allowed: {max_loan_limit}"
-        }
+    max_loan_limit = application.income * 10
+    if application.loan_amount > max_loan_limit:
+        return "REJECTED", f"Loan amount exceeds 10x monthly income limit. Max allowed: {max_loan_limit}"
 
     # If they pass all rules
-    return {
-        "status": "APPROVED",
-        "reason": "Passed all preliminary policy checks."
-    }
+    return "APPROVED", "Passed all preliminary policy checks."
