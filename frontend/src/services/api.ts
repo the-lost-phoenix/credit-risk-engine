@@ -34,6 +34,14 @@ export interface LoanResponse {
     status: string;
     risk_score: number;
     risk_factors: { feature: string; shap_score: number }[];
+    created_at: string;
+    full_name: string;
+    income: number;
+    loan_amount: number;
+    credit_score: number;
+    age: number;
+    years_employed: number;
+    gender: "M" | "F";
 }
 
 export interface VerificationResult {
@@ -69,16 +77,6 @@ export const registerUser = async (user: User) => {
 };
 
 export const loginUser = async (credentials: FormData) => {
-    // OAuth2PasswordRequestForm expects form data
-    // We override Content-Type to allow axios/browser to handle it or set it to form-urlencoded
-    // Actually, for FormData, axios sets multipart/form-data with boundary automatically if we don't set Content-Type.
-    // BUT, OAuth2PasswordRequestForm in FastAPI typically works with application/x-www-form-urlencoded.
-    // Let's try sending it as form-urlencoded if FormData is not working.
-    // However, standard FormData is multipart.
-    // Let's try setting Content-Type to undefined to let axios handle it as multipart/form-data, which FastAPI also supports for OAuth2 if configured,
-    // OR we convert FormData to URLSearchParams for x-www-form-urlencoded.
-
-    // For safety with standard OAuth2PasswordRequestForm:
     const response = await api.post<AuthResponse>('/login', credentials, {
         headers: {
             'Content-Type': undefined
@@ -99,6 +97,11 @@ export const submitApplication = async (data: LoanApplication) => {
 
 export const fetchApplications = async () => {
     const response = await api.get<LoanResponse[]>('/applications');
+    return response.data;
+};
+
+export const fetchLoanHistory = async () => {
+    const response = await api.get<LoanResponse[]>('/loan-history');
     return response.data;
 };
 

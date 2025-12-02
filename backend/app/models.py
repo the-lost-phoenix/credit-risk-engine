@@ -3,9 +3,6 @@ from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime
 from sqlalchemy.sql import func
 from .database import Base
 
-# app/models.py
-# ... (imports stay the same)
-
 class LoanApplication(Base):
     __tablename__ = "loan_applications"
 
@@ -22,7 +19,13 @@ class LoanApplication(Base):
     # -------------------
 
     status = Column(String, default="PENDING") 
-    risk_score = Column(Float, default=0.0) # Let's store the AI score too!
+    risk_score = Column(Float, default=0.0)
+    
+    # Link to User
+    user_id = Column(Integer, index=True, nullable=True)
+    
+    # Store the JSON explanation
+    risk_factors = Column(String, nullable=True)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
@@ -40,7 +43,7 @@ class RiskAnalysisHistory(Base):
     __tablename__ = "risk_analysis_history"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True) # ForeignKey would be better, but keeping it simple for now
+    user_id = Column(Integer, index=True)
     filename = Column(String)
     result = Column(String) # We'll store the JSON result as a string
     created_at = Column(DateTime(timezone=True), server_default=func.now())

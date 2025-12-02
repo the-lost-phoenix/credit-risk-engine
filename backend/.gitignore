@@ -1,8 +1,8 @@
 venv/
-.env
 __pycache__/
 *.pyc
 .DS_Store
 catboost_info/
 data/application_train.csv
+.env
 
