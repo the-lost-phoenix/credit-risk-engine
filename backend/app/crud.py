@@ -41,6 +41,14 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+def authenticate_user(db: Session, email: str, password: str):
+    user = get_user_by_email(db, email)
+    if not user:
+        return False
+    if not auth_utils.verify_password(password, user.hashed_password):
+        return False
+    return user
+
 # --- HISTORY CRUD ---
 def create_history_entry(db: Session, history: schemas.RiskAnalysisHistoryCreate):
     db_history = models.RiskAnalysisHistory(
