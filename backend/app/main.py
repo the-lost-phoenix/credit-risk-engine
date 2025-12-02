@@ -164,7 +164,7 @@ def apply_for_loan(application: schemas.LoanApplicationCreate, db: Session = Dep
         risk_score = result["score"]
         risk_factors = result["factors"]
         
-        if risk_score > 40:
+        if risk_score > 70:
             status = "REJECTED_HIGH_RISK"
         else:
             status = "APPROVED"

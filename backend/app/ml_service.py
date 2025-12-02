@@ -38,6 +38,7 @@ def predict_loan_risk(input_data: dict):
     # 3. Get Probability
     probability = model.predict_proba(df)[0][1]
     risk_score = float(probability * 100)
+    print(f"🔍 Calculated Risk Score: {risk_score}")
 
     # 4. EXPLAINABILITY (The Magic) 
     # specific_feature_indices tells CatBoost we want SHAP values

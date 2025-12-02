@@ -43,7 +43,7 @@ const getExplanation = (factor: RiskFactor, data: LoanApplication) => {
     try {
         if (feature === "AMT_ANNUITY") {
             return isHighRisk
-                ? `Estimated monthly obligation ($${Math.round(estimatedEMI)}) is high relative to monthly income ($${Math.round(monthlyIncome)}), straining repayment capacity.`
+                ? `Estimated monthly obligation (₹${Math.round(estimatedEMI)}) is high relative to monthly income (₹${Math.round(monthlyIncome)}), straining repayment capacity.`
                 : `Estimated monthly obligation is well within the safe debt-to-income ratio based on reported income.`;
         }
 
@@ -61,14 +61,14 @@ const getExplanation = (factor: RiskFactor, data: LoanApplication) => {
 
         if (feature === "AMT_CREDIT") {
             return isHighRisk
-                ? `Requested loan amount of $${loan.toLocaleString()} is substantial relative to the applicant's current financial profile.`
-                : `Requested loan amount of $${loan.toLocaleString()} is within a conservative range for this profile.`;
+                ? `Requested loan amount of ₹${loan.toLocaleString()} is substantial relative to the applicant's current financial profile.`
+                : `Requested loan amount of ₹${loan.toLocaleString()} is within a conservative range for this profile.`;
         }
 
         if (feature === "AMT_INCOME_TOTAL" || feature === "income") {
             return isHighRisk
-                ? `Annual income of $${income.toLocaleString()} falls below the optimal threshold for this loan tier, increasing default probability.`
-                : `Annual income of $${income.toLocaleString()} provides a strong financial buffer for loan repayment.`;
+                ? `Annual income of ₹${income.toLocaleString()} falls below the optimal threshold for this loan tier, increasing default probability.`
+                : `Annual income of ₹${income.toLocaleString()} provides a strong financial buffer for loan repayment.`;
         }
 
         if (feature === "NAME_CONTRACT_TYPE") {
